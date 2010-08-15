@@ -24,6 +24,7 @@ Torlogger* tlog;
 int main(int argc, char* argv[]) {
 	tlog_init(tlog);
 	open_socket();
+	server_handling();
 	close_socket();
 	tlog_free(tlog);
 	return EXIT_SUCCESS;

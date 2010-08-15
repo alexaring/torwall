@@ -28,7 +28,8 @@
 typedef enum {
 	ERROR,
 	DEBUG,
-	INFO
+	INFO,
+	NONE
 } E_LEVEL;
 
 typedef struct {

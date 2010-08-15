@@ -44,6 +44,18 @@ void open_socket() {
 	tlog_print(tlog, "Daemon startet, waiting for clients...");
 }
 
+void server_handling() {
+	Client c;
+	size_t socklen;
+	char buffer[1024];
+	socklen = sizeof(struct sockaddr_un);
+	while (1) {
+		c.fd = accept(sfd, (struct sockaddr *)&(c.remote), &socklen);
+		sprintf(buffer, "Accept Client: %d", c.fd);
+		tlog_print(tlog, buffer);
+	}
+}
+
 void close_socket() {
 	int err;
 	err = close(sfd);

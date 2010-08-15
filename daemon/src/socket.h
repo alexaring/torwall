@@ -19,6 +19,7 @@
 #ifndef __TORSOCKET_H__
 #define __TORSOCKET_H__
 
+#include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/socket.h>
@@ -31,6 +32,7 @@ extern Torlogger* tlog;
 
 typedef struct {
 	int fd;
+	struct sockaddr_un remote;
 } Client;
 
 void open_socket();
