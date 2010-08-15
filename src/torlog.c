@@ -18,14 +18,33 @@
 
 #include "torlog.h"
 
-void tlog_print(Torlogger* tlog, const char* msg) {
+void tlog_print(Torlogger* tlog, E_LEVEL loglevel, const char* msg) {
 	time_t timestamp;
 	struct tm *ts;
-	char buffer[BUFFER_SIZE];
+	char buffer[DATE_BUFFER_SIZE];
 	timestamp = time(NULL);
 	ts = localtime(&timestamp);
-	strftime(buffer, sizeof(char)*BUFFER_SIZE, "%a %Y-%m-%d %H:%M:%S %Z", ts);
-	fprintf(stdout, "%s: %s - %s\n", buffer, "INFO", msg);
+	strftime(buffer, sizeof(char)*DATE_BUFFER_SIZE, "%a %Y-%m-%d %H:%M:%S %Z", ts);
+	if ( (tlog->loglevel & INFO) ) { 
+		fprintf(stdout, "%s: %s - %s\n", buffer, print_loglevel(loglevel), msg);
+	}
+}
+
+const char* print_loglevel(E_LEVEL loglevel) {
+	switch (loglevel) {
+		case INFO:
+			return "INFO";
+			break;
+		case ERROR:
+			return "ERROR";
+			break;
+		case DEBUG:
+			return "DEBUG";
+			break;
+		default:
+			return "";
+			break;
+	}
 }
 
 void tlog_set_log_level(Torlogger* tlog, E_LEVEL loglevel) {
@@ -34,7 +53,11 @@ void tlog_set_log_level(Torlogger* tlog, E_LEVEL loglevel) {
 
 void tlog_init(Torlogger* tlog) {
 	tlog = (Torlogger*)malloc(sizeof(Torlogger));
-	tlog->loglevel = DEBUG;
+	//if (tlog == NULL) {
+	//	printf("la\n");
+	//}
+	tlog->loglevel = INFO;
+	//return tlog;
 }
 
 void tlog_free(Torlogger* tlog) {

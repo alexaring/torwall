@@ -24,7 +24,7 @@
 #include <stdlib.h>
 #include <sys/socket.h>
 #include <sys/un.h>
-#include <torlog.h>
+#include "torlog.h"
 
 #define SOCK_PATH "/tmp/torwall_socket"
 

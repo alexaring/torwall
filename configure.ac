@@ -20,6 +20,6 @@ AC_CHECK_HEADERS([fcntl.h stdlib.h string.h unistd.h])
 
 # Checks for library functions.
 AC_FUNC_MALLOC
-AC_CHECK_FUNCS([memset])
+AC_CHECK_FUNCS([memset malloc])
 
 AC_OUTPUT(Makefile)

@@ -1,10 +1,9 @@
 # Basic Makefile for torwalltray
 
-AM_CFLAGS=-Wall -g \
-            -Iinclude
+AM_CFLAGS=-Wall -g
 
-bin_PROGRAMS = torwalltray
-torwalltray_SOURCES=src/tdaemon.c src/socket.c src/torlog.c \
+bin_PROGRAMS = torwalldaemon
+torwalldaemon_SOURCES=src/tdaemon.c src/socket.c src/torlog.c \
                    src/torlog.h \
                    src/socket.h
 
