@@ -1,12 +1,12 @@
 /*
  * =====================================================================================
  *
- *       Filename:  tdaemon.c
+ *       Filename:  netapi.h
  *
- *    Description: TorWall daemon.c 
+ *    Description:  Network api between daemon and client.
  *
  *        Version:  1.0
- *        Created:  08/15/2010 02:27:29 AM
+ *        Created:  08/17/2010 09:18:35 PM
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -16,17 +16,20 @@
  * =====================================================================================
  */
 
-#include "torlog.h"
-#include "socket.h"
+#ifndef __NETAPI_H__
+#define __NETAPI_H__
 
-Torlogger* tlog;
+typedef enum {
+	STATUS,
+	ON,
+	OFF
+} E_CMD;
 
-int main(int argc, char* argv[]) {
-	tlog_init(&tlog);
-	tlog_set_log_level(tlog, ERROR | INFO | DEBUG);
-	open_socket();
-	server_handling();
-	close_socket();
-	tlog_free(&tlog);
-	return EXIT_SUCCESS;
-}
+typedef struct {
+	ssize_t length;
+	E_CMD cmd;
+	void* data;
+} Packet;
+
+#endif
+

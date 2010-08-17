@@ -25,6 +25,8 @@
 #include <sys/socket.h>
 #include <sys/un.h>
 #include "torlog.h"
+#include "iptables.h"
+#include "netapi.h"
 
 #define SOCK_PATH "/tmp/torwall_socket"
 
@@ -38,6 +40,5 @@ typedef struct {
 void open_socket();
 void close_socket();
 void server_handling();
-void client_handling(void (*f)(Client c));
 
 #endif

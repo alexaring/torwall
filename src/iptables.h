@@ -1,12 +1,12 @@
 /*
  * =====================================================================================
  *
- *       Filename:  tdaemon.c
+ *       Filename:  iptables.h
  *
- *    Description: TorWall daemon.c 
+ *    Description:  iptables api header file
  *
  *        Version:  1.0
- *        Created:  08/15/2010 02:27:29 AM
+ *        Created:  08/17/2010 11:04:33 PM
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -16,17 +16,16 @@
  * =====================================================================================
  */
 
+#ifndef __IPTABLES_API_H__
+#define __IPTABLES_API_H__
+
 #include "torlog.h"
-#include "socket.h"
 
-Torlogger* tlog;
+extern Torlogger* tlog;
 
-int main(int argc, char* argv[]) {
-	tlog_init(&tlog);
-	tlog_set_log_level(tlog, ERROR | INFO | DEBUG);
-	open_socket();
-	server_handling();
-	close_socket();
-	tlog_free(&tlog);
-	return EXIT_SUCCESS;
-}
+void torwall_on(void);
+void torwall_off(void);
+int torwall_status(void);
+
+#endif
+
