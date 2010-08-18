@@ -18,7 +18,7 @@
 
 #include "iptables.h"
 
-static int is_torwall;
+static int is_torwall = 0;
 
 void torwall_on() {
 	is_torwall = 1;

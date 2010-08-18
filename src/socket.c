@@ -54,19 +54,39 @@ void client_handling(Client c, fd_set* readfds) {
 		}
 		switch (recvbuffer->cmd) {
 			case STATUS:
-				torwall_status();
+				sendbuffer->cmd = STATUS;
+				sendbuffer->length = sizeof(int);
+				sendbuffer->data = malloc(sizeof(int));
+				send(c.fd, (void*)sendbuffer, sizeof(E_CMD)+sizeof(ssize_t), 0);
+				*((int*)sendbuffer->data) = torwall_status();
+				send(c.fd, sendbuffer->data, sizeof(int), 0);
 				sprintf(charbuffer, "Client %d ask for status", c.fd);
 				tlog_print(tlog, DEBUG, charbuffer);
+				free(sendbuffer->data);
 				break;
 			case ON:
 				torwall_on();
+				sendbuffer->cmd = STATUS;
+				sendbuffer->length = sizeof(int);
+				sendbuffer->data = malloc(sizeof(int));
+				send(c.fd, (void*)sendbuffer, sizeof(E_CMD)+sizeof(ssize_t), 0);
+				*((int*)sendbuffer->data) = torwall_status();
+				send(c.fd, sendbuffer->data, sizeof(int), 0);
 				sprintf(charbuffer, "Torwall on from client %d", c.fd);
 				tlog_print(tlog, DEBUG, charbuffer);
+				free(sendbuffer->data);
 				break;
 			case OFF:
 				torwall_off();
+				sendbuffer->cmd = STATUS;
+				sendbuffer->length = sizeof(int);
+				sendbuffer->data = malloc(sizeof(int));
+				send(c.fd, (void*)sendbuffer, sizeof(E_CMD)+sizeof(ssize_t), 0);
+				*((int*)sendbuffer->data) = torwall_status();
+				send(c.fd, sendbuffer->data, sizeof(int), 0);
 				sprintf(charbuffer, "Torwall off from client %d", c.fd);
 				tlog_print(tlog, DEBUG, charbuffer);
+				free(sendbuffer->data);
 				break;
 			default:
 				sprintf(charbuffer, "Error cmd from client %d", c.fd);
@@ -106,17 +126,16 @@ void open_socket() {
 void server_handling() {
 	Client c;
 	int nfds, scount;
-	fd_set readfds, writefds;
+	fd_set readfds;
 	size_t socklen;
 	char buffer[128];
 	nfds = 1000;
 	socklen = sizeof(struct sockaddr_un);
 	while (1) {
 		FD_ZERO(&readfds);
-		FD_ZERO(&writefds);
 		FD_SET(sfd, &readfds);
 		for_each(list, for_setfds, &readfds);
-		scount = select(nfds, &readfds, &writefds, NULL, NULL);
+		scount = select(nfds, &readfds, NULL, NULL, NULL);
 		if (scount < 0) {
 			tlog_print_perror(tlog);
 			exit(EXIT_FAILURE);
