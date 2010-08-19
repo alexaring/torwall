@@ -13,11 +13,12 @@ torwalldaemon_SOURCES=src/tdaemon.c src/socket.c src/torlog.c src/list.c src/ipt
 				   src/netapi.h \
                    src/socket.h
 
-torwalltray_SOURCES=src/torwalltray.c src/notify.c src/menu.c src/tray.c src/socket_client.c \
+torwalltray_SOURCES=src/torwalltray.c src/notify.c src/menu.c src/tray.c src/socket_client.c src/torlog.c \
                    src/torwalltray.h \
 				   src/tray.h \
 				   src/notify.h \
 				   src/socket_client.h \
+				   src/torlog.h \
 				   src/menu.h
 
 dist_noinst_SCRIPTS = autogen.sh

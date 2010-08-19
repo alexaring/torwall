@@ -16,14 +16,19 @@
  * =====================================================================================
  */
 
+#ifndef __TORNOTIFY_H__
+#define __TORNOTIFY_H__
+
 #include <gtk/gtk.h>
 #include <libnotify/notify.h>
 
-#define TIMEOUT 5
+#define TIMEOUT NOTIFY_EXPIRES_DEFAULT
 #define HEADLINE "Torwall Status"
-
-extern gboolean isWallActive;
 
 void create_notify(GtkStatusIcon* tray_icon, gchar* str);
 
 void update_notify(gchar* text, gchar* pic);
+
+void close_notify();
+
+#endif

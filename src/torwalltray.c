@@ -16,20 +16,21 @@
  * =====================================================================================
  */
 
-#include <gtk/gtk.h>
 #include "tray.h"
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
+#include "torlog.h"
+#include "socket_client.h"
+#include <gtk/gtk.h>
 
-gboolean isWallActive;
+Torlogger* tlog;
 
 gint main(gint argc, gchar** argv){
-	isWallActive = 0;
+	tlog_init(&tlog);
+	open_socket();
 	gtk_init(&argc, &argv);
 	gdk_threads_init();
 	create_tray_icon();
 	gtk_main();
+	tlog_free(&tlog);
+	close_socket();
 	return 0;
 }

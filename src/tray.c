@@ -22,13 +22,16 @@ static GtkStatusIcon* tray_icon = NULL;
 static GtkMenu* menu = NULL;
 
 void update_icon(void){
-	isWallActive ^= 0x1;
-	if (isWallActive) {
+	gboolean is_wall_active;
+	is_wall_active = torwall_status();
+	if (!is_wall_active) {
+		torwall_on();
 		gtk_status_icon_set_from_icon_name(tray_icon, "torwallActive");
 		update_notify(TOOL_ACTIVE, "torwallActive");
 		gtk_status_icon_set_tooltip(tray_icon, 
 				TOOL_ACTIVE);
 	} else {
+		torwall_off();
 		gtk_status_icon_set_from_icon_name(tray_icon, "torwallInactive");
 		update_notify(TOOL_INACTIVE, "torwallInactive");
 		gtk_status_icon_set_tooltip(tray_icon, 
@@ -46,6 +49,8 @@ static void on_menu(GtkStatusIcon *status_icon, guint button, guint activate_tim
 
 void create_tray_icon(){
 	GtkWidget *item0, *item1, *item2, *item3;
+	gboolean is_wall_active;
+	is_wall_active = torwall_status();
 	menu = (GtkMenu*)gtk_menu_new();
 	item0 = gtk_menu_item_new_with_label("Toggle");
 	item1 = gtk_menu_item_new_with_label("Preferences...");
@@ -68,8 +73,14 @@ void create_tray_icon(){
 	gtk_status_icon_set_from_icon_name(tray_icon, 
 			GTK_STOCK_MEDIA_STOP);
 	create_notify(tray_icon, TOOL_INACTIVE);
-	gtk_status_icon_set_tooltip(tray_icon, 
-			TOOL_INACTIVE);
-	gtk_status_icon_set_from_icon_name(tray_icon, "torwallInactive");
+	if (is_wall_active) {
+		gtk_status_icon_set_tooltip(tray_icon, 
+				TOOL_ACTIVE);
+		gtk_status_icon_set_from_icon_name(tray_icon, "torwallActive");
+	} else {
+		gtk_status_icon_set_tooltip(tray_icon, 
+				TOOL_INACTIVE);
+		gtk_status_icon_set_from_icon_name(tray_icon, "torwallInactive");
+	}
 	gtk_status_icon_set_visible(tray_icon, TRUE);
 }

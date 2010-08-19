@@ -19,11 +19,21 @@
 #ifndef __SOCKET_CLIENT_H__
 #define __SOCKET_CLIENT_H__
 
+#include <sys/un.h>
+#include <unistd.h>
+#include <sys/socket.h>
+#include "netapi.h"
+#include "torlog.h"
+
+#define SOCK_PATH "/tmp/torwall_socket"
+
+extern Torlogger* tlog;
+
 void open_socket(void);
 int torwall_status(void);
-void torwall_on(void);
-void torwall_off(void);
-void close(void);
+int torwall_on(void);
+int torwall_off(void);
+void close_socket(void);
 
 #endif
 

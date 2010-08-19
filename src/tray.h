@@ -16,8 +16,12 @@
  * =====================================================================================
  */
 
+#ifndef __TORTRAY_H__
+#define __TORTRAY_H__
+
 #include <gtk/gtk.h>
 #include <string.h>
+#include "socket_client.h"
 #include "notify.h"
 
 #define TOOL_ACTIVE "Torwall active"
@@ -25,8 +29,8 @@
 
 #define BUFSIZE 1024
 
-extern gboolean isWallActive;
-
 void update_icon(void);
 
 void create_tray_icon();
+
+#endif
