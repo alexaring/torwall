@@ -22,11 +22,13 @@ static int is_torwall = 0;
 
 void torwall_on() {
 	is_torwall = 1;
+	// Do iptables rules setting here
 	tlog_print(tlog, INFO, "Turn torwall on");
 }
 
 void torwall_off() {
 	is_torwall = 0;
+	// Do iptables rules resetting here
 	tlog_print(tlog, INFO, "Turn torwall on");
 }
 
