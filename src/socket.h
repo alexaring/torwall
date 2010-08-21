@@ -24,6 +24,7 @@
 #include <stdlib.h>
 #include <sys/socket.h>
 #include <sys/un.h>
+#include <sys/stat.h>
 #include "torlog.h"
 #include "iptables.h"
 #include "netapi.h"

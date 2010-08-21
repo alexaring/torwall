@@ -85,7 +85,7 @@ void client_handling(Client c, fd_set* readfds) {
 				*((int*)sendbuffer->data) = torwall_status();
 				send(c.fd, sendbuffer->data, sizeof(int), 0);
 				sprintf(charbuffer, "Torwall off from client %d", c.fd);
-				tlog_print(tlog, DEBUG, charbuffer);
+				tlog_print(tlog, INFO, charbuffer);
 				free(sendbuffer->data);
 				break;
 			default:
@@ -116,6 +116,11 @@ void open_socket() {
 		exit(EXIT_FAILURE);
 	}
 	err = listen(sfd, 5);
+	if (err<0) {
+		tlog_print_perror(tlog);
+		exit(EXIT_FAILURE);
+	}
+	err = chmod(SOCK_PATH, 666);
 	if (err<0) {
 		tlog_print_perror(tlog);
 		exit(EXIT_FAILURE);
@@ -157,7 +162,7 @@ void close_socket() {
 	int err;
 	err = close(sfd);
 	if (err<0) {
-		perror("close");
+		tlog_print_perror(tlog);
 		exit(EXIT_FAILURE);
 	}
 }

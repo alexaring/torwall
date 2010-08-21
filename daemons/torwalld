@@ -1,0 +1,19 @@
+#!/bin/sh
+TORWALLDIR='\usr\share\torwall\'
+case $1 in
+start)
+	${TORWALLDIR}transocks_em.rb 127.0.0.1 9050 1212 1> /dev/null 2> /dev/null &
+	${TORWALLDIR}tdaemon start 1> /dev/null 2> /dev/null &
+    ;;
+stop)
+	killall -q -3 transocks_em.rb
+	killall -q -3 tdaemon
+	;;
+restart)
+	stop
+	start
+	;;
+*)
+    echo "Please run:\n/etc/init.d/torwalldaemon start|stop|restart"
+	exit 1
+esac

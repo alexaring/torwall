@@ -5,8 +5,8 @@ AM_CFLAGS=-Wall -g \
             -Iinclude
 AM_LDFLAGS=`pkg-config --libs gtk+-2.0 libnotify`
 
-bin_PROGRAMS = torwalldaemon torwalltray
-torwalldaemon_SOURCES=src/tdaemon.c src/socket.c src/torlog.c src/list.c src/iptables.c \
+bin_PROGRAMS = torwalld torwalltray
+torwalld_SOURCES=src/tdaemon.c src/socket.c src/torlog.c src/list.c src/iptables.c \
                    src/torlog.h \
 				   src/list.h \
 				   src/iptables.h \

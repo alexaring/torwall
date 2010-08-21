@@ -23,12 +23,16 @@ static int is_torwall = 0;
 void torwall_on() {
 	is_torwall = 1;
 	// Do iptables rules setting here
+	//system("iptables-save > /etc/torwall/iptables-state");
+	system("cat /etc/torwall/torrules | iptables-restore -c");
 	tlog_print(tlog, INFO, "Turn torwall on");
 }
 
 void torwall_off() {
 	is_torwall = 0;
 	// Do iptables rules resetting here
+	//system("cat /etc/torwall/iptables-state | iptables-restore -c");
+	system("iptables -t nat --flush");
 	tlog_print(tlog, INFO, "Turn torwall on");
 }
 
