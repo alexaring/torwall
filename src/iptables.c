@@ -16,6 +16,11 @@
  * =====================================================================================
  */
 
+#include <limits.h>
+
+#include "netapi.h"
+#include "config_defines.h"
+#include "utils.h"
 #include "iptables.h"
 
 static int is_torwall = 0;
@@ -31,27 +36,45 @@ void clear_iptables() {
 }
 
 int torwall_on() {
+    char resolvconf_save[PATH_MAX];
+    char resolvconf_torwall[PATH_MAX];
+
 	is_torwall = 1;
 	// Do iptables rules setting here
-	system("cp /etc/resolv.conf /etc/torwall/iptables/resolv.conf-state");
-	system("cp /etc/torwall/resolv.conf /etc/resolv.conf");
+    sprintf(resolvconf_save, "%s/%s", PREFIX, 
+            "etc/torwall/iptables/resolv.conf-state");
+    if (copy("/etc/resolv.conf", resolvconf_save) == -1) {
+        // Yell
+    }
+    sprintf(resolvconf_torwall, "%s/%s", PREFIX, 
+            "etc/torwall/iptables/resolv.conf");
+    if (copy(resolvconf_torwall, "/etc/resolv.conf") == -1) {
+        // Yell
+    }
 	system("iptables-save > /etc/torwall/iptables/iptables-state");
 	system("cat /etc/torwall/torrules | iptables-restore -c");
 	tlog_print(INFO, "Turn torwall on");
 	//SEE netapi.h for RETURN value
-	return 0;
+
+	return TOR_OK;
 }
 
 int torwall_off() {
+    char resolvconf_save[PATH_MAX];
+
 	is_torwall = 0;
 	// Do iptables rules resetting here
-	system("cp /etc/torwall/iptables/resolv.conf-state /etc/resolv.conf");
+    sprintf(resolvconf_save, "%s/%s", PREFIX, 
+            "etc/torwall/iptables/resolv.conf-state");
+    if (copy(resolvconf_save, "/etc/resolv.conf") == -1) {
+        // Yell
+    }
 	clear_iptables();
 	system("cat /etc/torwall/iptables/iptables-state | iptables-restore -c");
 	//system("iptables -t nat --flush");
 	tlog_print(INFO, "Turn torwall on");
 	//SEE netapi.h for RETURN value
-	return 0;
+	return TOR_OK;
 }
 
 int torwall_status() {

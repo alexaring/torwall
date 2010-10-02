@@ -1,0 +1,5 @@
+/**
+ * Global defines, set by configure
+ */
+
+#define PREFIX "@prefix@"

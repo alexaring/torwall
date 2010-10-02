@@ -28,9 +28,9 @@ typedef enum {
 
 typedef enum {
 	TOR_ERROR=-1,
+	TOR_OK,
 	STATUS_NOT_RUNNING,
-	STATUS_RUNNING,
-	TOR_OK
+	STATUS_RUNNING
 } E_RETURN;
 
 typedef struct {
