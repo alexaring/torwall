@@ -39,55 +39,58 @@ void open_socket() {
 	tlog_print(INFO, "Connected.");
 }
 
-int torwall_status(void) {
-	Packet pkt;
-	int err, result;
-	pkt.cmd = STATUS;
-	err = send(s, (void*)&pkt, sizeof(pkt), 0);
+E_RETURN torwall_status(void) {
+	PacketReturn pktret;
+	PacketCommand pktcmd;
+	int err;
+	pktcmd.cmd = STATUS;
+	err = send(s, (void*)&pktcmd, sizeof(PacketCommand), 0);
 	if (err<0) {
 		tlog_print_perror();
-		exit(EXIT_FAILURE);
+		return TOR_ERROR;
 	}
-	recv(s, (void*)&pkt, sizeof(E_CMD)+sizeof(ssize_t), 0);
-	pkt.data = malloc(pkt.length);
-	recv(s, pkt.data, pkt.length, 0);
-	result = *((int*)pkt.data);
-	free(pkt.data);
-	return result;
-}
-
-int torwall_on() {
-	Packet pkt;
-	int err, result;
-	pkt.cmd = ON;
-	err = send(s, (void*)&pkt, sizeof(pkt), 0);
+	err = recv(s, (void*)&pktret, sizeof(PacketReturn), 0);
 	if (err<0) {
 		tlog_print_perror();
-		exit(EXIT_FAILURE);
+		return TOR_ERROR;
 	}
-	recv(s, (void*)&pkt, sizeof(E_CMD)+sizeof(ssize_t), 0);
-	pkt.data = malloc(pkt.length);
-	recv(s, pkt.data, pkt.length, 0);
-	result = *((int*)pkt.data);
-	free(pkt.data);
-	return result;
+	return pktret.returncmd;
 }
 
-int torwall_off() {
-	Packet pkt;
-	int err, result;
-	pkt.cmd = OFF;
-	err = send(s, (void*)&pkt, sizeof(pkt), 0);
+E_RETURN torwall_on() {
+	PacketReturn pktret;
+	PacketCommand pktcmd;
+	int err;
+	pktcmd.cmd = ON;
+	err = send(s, (void*)&pktcmd, sizeof(PacketCommand), 0);
 	if (err<0) {
-		tlog_print_perror(tlog);
-		exit(EXIT_FAILURE);
+		tlog_print_perror();
+		return TOR_ERROR;
 	}
-	recv(s, (void*)&pkt, sizeof(E_CMD)+sizeof(ssize_t), 0);
-	pkt.data = malloc(pkt.length);
-	recv(s, pkt.data, pkt.length, 0);
-	result = *((int*)pkt.data);
-	free(pkt.data);
-	return result;
+	recv(s, (void*)&pktret, sizeof(PacketReturn), 0);
+	if (err<0) {
+		tlog_print_perror();
+		return TOR_ERROR;
+	}
+	return pktret.returncmd;
+}
+
+E_RETURN torwall_off() {
+	PacketReturn pktret;
+	PacketCommand pktcmd;
+	int err;
+	pktcmd.cmd = OFF;
+	err = send(s, (void*)&pktcmd, sizeof(PacketCommand), 0);
+	if (err<0) {
+		tlog_print_perror();
+		return TOR_ERROR;
+	}
+	recv(s, (void*)&pktret, sizeof(PacketReturn), 0);
+	if (err<0) {
+		tlog_print_perror();
+		return TOR_ERROR;
+	}
+	return pktret.returncmd;
 }
 
 void close_socket() {
