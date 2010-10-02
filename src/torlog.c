@@ -18,12 +18,17 @@
 
 #include "torlog.h"
 
-void tlog_print(Torlogger* tlog, E_LEVEL loglevel, const char* msg) {
+static Torlogger* tlog = NULL;
+
+int tlog_print(E_LEVEL loglevel, const char* msg) {
 	time_t timestamp;
 	struct tm *ts;
 	char buffer[DATE_BUFFER_SIZE];
+	if (!tlog) {
+		return -1;
+	} 
 	if (tlog->loglevel & NONE) {
-		return;
+		return 0;
 	} 
 	timestamp = time(NULL);
 	ts = localtime(&timestamp);
@@ -37,32 +42,49 @@ void tlog_print(Torlogger* tlog, E_LEVEL loglevel, const char* msg) {
 	if ( (tlog->loglevel & DEBUG) && (loglevel == DEBUG) ) { 
 		fprintf(stdout, "%s: %s - %s\n", buffer, "DEBUG", msg);
 	}
+	return 0;
 }
 
-void tlog_print_perror(Torlogger* tlog) {
+int tlog_print_perror() {
 	time_t timestamp;
 	struct tm *ts;
 	char buffer[DATE_BUFFER_SIZE];
 	char* errstr;
+	if (!tlog) {
+		return -1;
+	}
 	if (tlog->loglevel & NONE) {
-		return;
+		return 0;
 	} 
 	timestamp = time(NULL);
 	ts = localtime(&timestamp);
 	strftime(buffer, sizeof(char)*DATE_BUFFER_SIZE, "%a %Y-%m-%d %H:%M:%S %Z", ts);
 	errstr = strerror(errno);
 	fprintf(stderr, "%s: %s - %s\n", buffer, "ERROR", errstr);
+	return 0;
 }
 
-void tlog_set_log_level(Torlogger* tlog, E_LEVEL loglevel) {
+int tlog_set_log_level(E_LEVEL loglevel) {
+	if (!tlog) {
+		return -1;
+	}
 	tlog->loglevel = loglevel;
+	return 0;
 }
 
-void tlog_init(Torlogger** tlog) {
-	(*tlog) = (Torlogger*)malloc(sizeof(Torlogger));
-	(*tlog)->loglevel = INFO;
+int tlog_init() {
+	tlog = (Torlogger*)malloc(sizeof(Torlogger));
+	if (!tlog) {
+		return -1;
+	}
+	tlog->loglevel = INFO;
+	return 0;
 }
 
-void tlog_free(Torlogger** tlog) {
-	free(*tlog);
+int tlog_free() {
+	if (!tlog) {
+		return -1;
+	}
+	free(tlog);
+	return 0;
 }

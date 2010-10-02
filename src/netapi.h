@@ -22,14 +22,24 @@
 typedef enum {
 	STATUS,
 	ON,
-	OFF
+	OFF,
+	EXIT
 } E_CMD;
 
+typedef enum {
+	TOR_ERROR=-1,
+	STATUS_NOT_RUNNING,
+	STATUS_RUNNING,
+	TOR_OK
+} E_RETURN;
+
 typedef struct {
-	ssize_t length;
 	E_CMD cmd;
-	void* data;
-} Packet;
+} PacketCommand;
+
+typedef struct {
+	E_RETURN returncmd;
+} PacketReturn;
 
 #endif
 

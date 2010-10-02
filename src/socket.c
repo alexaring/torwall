@@ -38,13 +38,14 @@ int equals(Client c1, Client c2) {
 
 void client_handling(Client c, fd_set* readfds) {
 	ssize_t read_size;
+	int err;
 	char charbuffer[128];
-	Packet* recvbuffer;
-	Packet* sendbuffer;
-	recvbuffer = (Packet*)malloc(sizeof(Packet));
-	sendbuffer = (Packet*)malloc(sizeof(Packet));
+	PacketCommand* recvbuffer;
+	PacketReturn* sendbuffer;
+	recvbuffer = (PacketCommand*)malloc(sizeof(PacketCommand));
+	sendbuffer = (PacketReturn*)malloc(sizeof(PacketReturn));
 	if (FD_ISSET(c.fd, readfds)) {
-		read_size = recv(c.fd, (void*)recvbuffer, sizeof(Packet), 0);
+		read_size = recv(c.fd, (void*)recvbuffer, sizeof(PacketReturn), 0);
 		if (read_size == 0) {
 			rm_list(&list, c, equals);
 			close(c.fd);
@@ -54,43 +55,32 @@ void client_handling(Client c, fd_set* readfds) {
 		}
 		switch (recvbuffer->cmd) {
 			case STATUS:
-				sendbuffer->cmd = STATUS;
-				sendbuffer->length = sizeof(int);
-				sendbuffer->data = malloc(sizeof(int));
-				send(c.fd, (void*)sendbuffer, sizeof(E_CMD)+sizeof(ssize_t), 0);
-				*((int*)sendbuffer->data) = torwall_status();
-				send(c.fd, sendbuffer->data, sizeof(int), 0);
+				err = torwall_status();
+				sendbuffer->returncmd = err;
+				send(c.fd, sendbuffer, sizeof(PacketReturn), 0);
 				sprintf(charbuffer, "Client %d ask for status", c.fd);
-				tlog_print(tlog, DEBUG, charbuffer);
-				free(sendbuffer->data);
+				tlog_print(DEBUG, charbuffer);
 				break;
 			case ON:
-				torwall_on();
-				sendbuffer->cmd = STATUS;
-				sendbuffer->length = sizeof(int);
-				sendbuffer->data = malloc(sizeof(int));
-				send(c.fd, (void*)sendbuffer, sizeof(E_CMD)+sizeof(ssize_t), 0);
-				*((int*)sendbuffer->data) = torwall_status();
-				send(c.fd, sendbuffer->data, sizeof(int), 0);
+				err = torwall_on();
+				sendbuffer->returncmd = err;
+				send(c.fd, sendbuffer, sizeof(PacketReturn), 0);
 				sprintf(charbuffer, "Torwall on from client %d", c.fd);
-				tlog_print(tlog, DEBUG, charbuffer);
-				free(sendbuffer->data);
+				tlog_print(DEBUG, charbuffer);
 				break;
 			case OFF:
-				torwall_off();
-				sendbuffer->cmd = STATUS;
-				sendbuffer->length = sizeof(int);
-				sendbuffer->data = malloc(sizeof(int));
-				send(c.fd, (void*)sendbuffer, sizeof(E_CMD)+sizeof(ssize_t), 0);
-				*((int*)sendbuffer->data) = torwall_status();
-				send(c.fd, sendbuffer->data, sizeof(int), 0);
+				err = torwall_off();
+				sendbuffer->returncmd = err;
+				send(c.fd, sendbuffer, sizeof(PacketReturn), 0);
 				sprintf(charbuffer, "Torwall off from client %d", c.fd);
-				tlog_print(tlog, INFO, charbuffer);
-				free(sendbuffer->data);
+				tlog_print(INFO, charbuffer);
+				break;
+			case EXIT:
+				// TODO
 				break;
 			default:
 				sprintf(charbuffer, "Error cmd from client %d", c.fd);
-				tlog_print(tlog, DEBUG, charbuffer);
+				tlog_print(DEBUG, charbuffer);
 				break;
 		}
 	}
@@ -104,28 +94,28 @@ void open_socket() {
 	list_init(&list);
 	sfd = socket(AF_UNIX, SOCK_STREAM, 0);
 	if (sfd<0) {
-		tlog_print_perror(tlog);
+		tlog_print_perror();
 		exit(EXIT_FAILURE);
 	}
-    local.sun_family = AF_UNIX;
-    strcpy(local.sun_path, SOCK_PATH);
-    unlink(local.sun_path);
+	local.sun_family = AF_UNIX;
+	strcpy(local.sun_path, SOCK_PATH);
+	unlink(local.sun_path);
 	err = bind(sfd, (struct sockaddr *)&local, sizeof(struct sockaddr_un));
 	if (err<0) {
-		tlog_print_perror(tlog);
+		tlog_print_perror();
 		exit(EXIT_FAILURE);
 	}
 	err = listen(sfd, 5);
 	if (err<0) {
-		tlog_print_perror(tlog);
+		tlog_print_perror();
 		exit(EXIT_FAILURE);
 	}
 	err = chmod(SOCK_PATH, 666);
 	if (err<0) {
-		tlog_print_perror(tlog);
+		tlog_print_perror();
 		exit(EXIT_FAILURE);
 	}
-	tlog_print(tlog, INFO, "Daemon startet, waiting for clients...");
+	tlog_print(INFO, "Daemon startet, waiting for clients...");
 }
 
 void server_handling() {
@@ -142,7 +132,7 @@ void server_handling() {
 		for_each(list, for_setfds, &readfds);
 		scount = select(nfds, &readfds, NULL, NULL, NULL);
 		if (scount < 0) {
-			tlog_print_perror(tlog);
+			tlog_print_perror();
 			exit(EXIT_FAILURE);
 		}
 		if (FD_ISSET(sfd, &readfds)) {
@@ -150,7 +140,7 @@ void server_handling() {
 			nfds++;
 			add_list(&list, c);
 			sprintf(buffer, "Accept Client: %d", c.fd);
-			tlog_print(tlog, INFO, buffer);
+			tlog_print(INFO, buffer);
 		} else {
 			for_each(list, client_handling, &readfds);
 		}
@@ -162,7 +152,7 @@ void close_socket() {
 	int err;
 	err = close(sfd);
 	if (err<0) {
-		tlog_print_perror(tlog);
+		tlog_print_perror();
 		exit(EXIT_FAILURE);
 	}
 }

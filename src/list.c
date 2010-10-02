@@ -42,12 +42,12 @@ void print_helper(Li* e, const char* print(Client c)) {
 	if (e == NULL) {
 		return;
 	}		
-	tlog_print(tlog, DEBUG, print(e->c));
+	tlog_print(DEBUG, print(e->c));
 	print_helper(e->next, print);
 }
 
 void print_list(Li* e, const char* print(Client c)) {
-	tlog_print(tlog, DEBUG, "List all connected Clients:");
+	tlog_print(DEBUG, "List all connected Clients:");
 	print_helper(e, print); 
 }
 

@@ -22,8 +22,8 @@
 Torlogger* tlog;
 
 int main(int argc, char* argv[]) {
-	tlog_init(&tlog);
-	tlog_set_log_level(tlog, ERROR | INFO | DEBUG);
+	tlog_init();
+	tlog_set_log_level(ERROR | INFO | DEBUG);
 	open_socket();
 	server_handling();
 	close_socket();

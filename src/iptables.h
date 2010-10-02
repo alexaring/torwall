@@ -21,10 +21,8 @@
 
 #include "torlog.h"
 
-extern Torlogger* tlog;
-
-void torwall_on(void);
-void torwall_off(void);
+int torwall_on(void);
+int torwall_off(void);
 int torwall_status(void);
 
 #endif

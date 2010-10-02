@@ -38,10 +38,10 @@ typedef struct {
 	E_LEVEL loglevel;
 } Torlogger;
 
-void tlog_init(Torlogger** tlog);
-void tlog_free(Torlogger** tlog);
-void tlog_set_log_level(Torlogger* tlog, E_LEVEL loglevel);
-void tlog_print(Torlogger* tlog, E_LEVEL loglevel, const char* msg);
-void tlog_print_perror(Torlogger* tlog);
+int tlog_init();
+int tlog_free();
+int tlog_set_log_level(E_LEVEL loglevel);
+int tlog_print(E_LEVEL loglevel, const char* msg);
+int tlog_print_perror();
 
 #endif

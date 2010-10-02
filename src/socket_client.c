@@ -25,10 +25,10 @@ void open_socket() {
 	int err;
 	s = socket(AF_UNIX, SOCK_STREAM, 0);
 	if (s<0) {
-		tlog_print_perror(tlog);
+		tlog_print_perror();
 		exit(EXIT_FAILURE);
 	}
-	tlog_print(tlog, INFO, "Trying to connect...");
+	tlog_print(INFO, "Trying to connect...");
 	remote.sun_family = AF_UNIX;
     strcpy(remote.sun_path, SOCK_PATH);
 	err = connect(s, (struct sockaddr *)&remote, sizeof(struct sockaddr_un)); 
@@ -36,7 +36,7 @@ void open_socket() {
         tlog_print_perror(tlog);
         exit(EXIT_FAILURE);
     }
-	tlog_print(tlog, INFO, "Connected.");
+	tlog_print(INFO, "Connected.");
 }
 
 int torwall_status(void) {
@@ -45,7 +45,7 @@ int torwall_status(void) {
 	pkt.cmd = STATUS;
 	err = send(s, (void*)&pkt, sizeof(pkt), 0);
 	if (err<0) {
-		tlog_print_perror(tlog);
+		tlog_print_perror();
 		exit(EXIT_FAILURE);
 	}
 	recv(s, (void*)&pkt, sizeof(E_CMD)+sizeof(ssize_t), 0);
@@ -62,7 +62,7 @@ int torwall_on() {
 	pkt.cmd = ON;
 	err = send(s, (void*)&pkt, sizeof(pkt), 0);
 	if (err<0) {
-		tlog_print_perror(tlog);
+		tlog_print_perror();
 		exit(EXIT_FAILURE);
 	}
 	recv(s, (void*)&pkt, sizeof(E_CMD)+sizeof(ssize_t), 0);
@@ -94,7 +94,7 @@ void close_socket() {
 	int err;
 	err = close(s);
 	if (err<0) {
-		tlog_print_perror(tlog);
+		tlog_print_perror();
 		exit(EXIT_FAILURE);
 	}
 }
