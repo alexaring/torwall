@@ -1,5 +1,7 @@
 #include <unistd.h>
 #include <stdio.h>
+#include <libiptc/libiptc.h>
+
 #include "torlog.h"
 
 int copy(const char *src, const char *dst)
@@ -8,16 +10,16 @@ int copy(const char *src, const char *dst)
     int c = -1;
 
     if (!src || !dst) {
-        // Yell
+        tlog_print(ERROR, "Bad param.");
         return -1;
     }
 
     if ((src_file = fopen(src, "rb")) == NULL) {
-        // Yell
+        tlog_print_perror();
         return -1;
     }
     if ((dst_file = fopen(dst, "wb")) == NULL) {
-        // Yell
+        tlog_print_perror();
         return -1;
     }
 
@@ -25,27 +27,31 @@ int copy(const char *src, const char *dst)
     while (!feof(src_file)) {
         c = fgetc(src_file);
         if (ferror(src_file)) {
-            // Yell 
+            tlog_print_perror();
             return -1;
         }
         if (!feof(src_file)) {
             fputc(c, dst_file);
         }
         if (ferror(dst_file)) {
-            // Yell
+            tlog_print_perror();
             return -1;
         }
     }
 
     if (fclose(src_file) == EOF) {
-        // Yell
+        tlog_print_perror();
         return -1;
     }
 
     if (fclose(dst_file) == EOF) {
-        // Yell
+        tlog_print_perror();
         return -1;
     }
 
     return 0;
+}
+
+int clear_ipt_rules()
+{
 }

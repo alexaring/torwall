@@ -25,7 +25,10 @@ int tlog_print(E_LEVEL loglevel, const char* msg) {
 	struct tm *ts;
 	char buffer[DATE_BUFFER_SIZE];
 	if (!tlog) {
-		return -1;
+        // Maybe we're not initialized yet
+        if (tlog_init() == -1) {
+            return -1;
+        }
 	} 
 	if (tlog->loglevel & NONE) {
 		return 0;
@@ -51,7 +54,10 @@ int tlog_print_perror() {
 	char buffer[DATE_BUFFER_SIZE];
 	char* errstr;
 	if (!tlog) {
-		return -1;
+        // Maybe we're not initialized yet
+        if (tlog_init() == -1) {
+            return -1;
+        }
 	}
 	if (tlog->loglevel & NONE) {
 		return 0;
@@ -66,6 +72,10 @@ int tlog_print_perror() {
 
 int tlog_set_log_level(E_LEVEL loglevel) {
 	if (!tlog) {
+        // Maybe we're not initialized yet
+        if (tlog_init() == -1) {
+            return -1;
+        }
 		return -1;
 	}
 	tlog->loglevel = loglevel;
