@@ -21,25 +21,29 @@
 static GtkStatusIcon* tray_icon = NULL;
 
 void update_icon(void){
-	gboolean is_wall_active;
+	E_RETURN is_wall_active;
 	is_wall_active = torwall_status();
-	if (!is_wall_active) {
+	if (is_wall_active == STATUS_NOT_RUNNING) {
 		torwall_on();
 		gtk_status_icon_set_from_icon_name(tray_icon, "torwallActive");
 		update_notify(TOOL_ACTIVE, "torwallActive");
 		gtk_status_icon_set_tooltip(tray_icon, 
 				TOOL_ACTIVE);
+		g_signal_handler_block(ch_toggle, ch_toggle_handler_id);
+		gtk_check_menu_item_set_active(ch_toggle, 1);
+		gtk_widget_set_sensitive((GtkWidget*)i_currentnode, 1);
+		g_signal_handler_unblock(ch_toggle, ch_toggle_handler_id);
 	} else {
 		torwall_off();
 		gtk_status_icon_set_from_icon_name(tray_icon, "torwallInactive");
 		update_notify(TOOL_INACTIVE, "torwallInactive");
 		gtk_status_icon_set_tooltip(tray_icon, 
 				TOOL_INACTIVE);
+		g_signal_handler_block(ch_toggle, ch_toggle_handler_id);
+		gtk_check_menu_item_set_active(ch_toggle, 0);
+		gtk_widget_set_sensitive((GtkWidget*)i_currentnode, 0);
+		g_signal_handler_unblock(ch_toggle, ch_toggle_handler_id);
 	}
-	g_signal_handler_block(ch_toggle, ch_toggle_handler_id);
-	gtk_check_menu_item_set_active(ch_toggle, !is_wall_active);
-	g_signal_handler_unblock(ch_toggle, ch_toggle_handler_id);
-	gtk_widget_set_sensitive(i_currentnode, !is_wall_active);
 }
 
 static void on_click(GtkStatusIcon *status_icon, gpointer user_data){
@@ -51,7 +55,7 @@ static void on_menu(GtkStatusIcon *status_icon, guint button, guint activate_tim
 }
 
 void create_tray_icon(){
-	gboolean is_wall_active;
+	E_RETURN is_wall_active;
 	is_wall_active = torwall_status();
 	tray_icon = gtk_status_icon_new();
 	create_menu(is_wall_active);
@@ -63,7 +67,7 @@ void create_tray_icon(){
 	gtk_status_icon_set_from_icon_name(tray_icon, 
 			GTK_STOCK_MEDIA_STOP);
 	create_notify(tray_icon, TOOL_INACTIVE);
-	if (is_wall_active) {
+	if (is_wall_active == STATUS_RUNNING) {
 		gtk_status_icon_set_tooltip(tray_icon, 
 				TOOL_ACTIVE);
 		gtk_status_icon_set_from_icon_name(tray_icon, "torwallActive");

@@ -82,7 +82,7 @@ void create_torexit_menu() {
 			G_CALLBACK(on_click_exit_us), NULL);
 }
 
-void create_menu(gboolean is_active) {
+void create_menu(E_RETURN is_active) {
 	GtkMenuItem *i_entrynode;
 	GtkImage *img_preferences, *img_currentnode, *img_exitnodes, *img_exit, *img_about;
 	GtkImageMenuItem *i_preferences, *i_exitnodes, *i_about, *i_exit;
@@ -98,7 +98,11 @@ void create_menu(gboolean is_active) {
 	ch_toggle = (GtkCheckMenuItem*)gtk_check_menu_item_new_with_label("Toggle Torwall");
 	ch_strict = (GtkCheckMenuItem*)gtk_check_menu_item_new_with_label("Strict exitnodes");
 	sep_menu = (GtkSeparatorMenuItem*)gtk_separator_menu_item_new();
-	gtk_check_menu_item_set_active(ch_toggle, is_active);
+	if (is_active == STATUS_RUNNING) {
+		gtk_check_menu_item_set_active(ch_toggle, 1);
+	} else {
+		gtk_check_menu_item_set_active(ch_toggle, 0);
+	}
 	i_currentnode = (GtkImageMenuItem*)gtk_image_menu_item_new_with_label("Current Exitnode");
 	i_preferences = (GtkImageMenuItem*)gtk_image_menu_item_new_with_label("Preferences");
 	img_currentnode = (GtkImage*)gtk_image_new_from_file(PIXMAPSDIR"de.png");
@@ -115,7 +119,11 @@ void create_menu(gboolean is_active) {
 	i_exit = (GtkImageMenuItem*)gtk_image_menu_item_new_with_label("Exit");
 	img_exit = (GtkImage*)gtk_image_new_from_file(PIXMAPSDIR"exit.png");
 	gtk_image_menu_item_set_image(i_exit, (GtkWidget*)img_exit);
-	gtk_widget_set_sensitive((GtkWidget*)i_currentnode, is_active);
+	if (is_active == STATUS_RUNNING) {
+		gtk_widget_set_sensitive((GtkWidget*)i_currentnode, 1);
+	} else {
+		gtk_widget_set_sensitive((GtkWidget*)i_currentnode, 0);
+	}
 	gtk_menu_item_set_submenu((GtkMenuItem*)i_exitnodes, (GtkWidget*)m_exitnode);
 	gtk_menu_item_set_submenu((GtkMenuItem*)i_entrynode, (GtkWidget*)m_entrynode);
 	gtk_menu_append(traymenu, (GtkWidget*)i_currentnode);

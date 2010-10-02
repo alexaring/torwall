@@ -15,10 +15,12 @@ int copy(const char *src, const char *dst)
     }
 
     if ((src_file = fopen(src, "rb")) == NULL) {
+        tlog_print(ERROR, "Can't open source file.");
         tlog_print_perror();
         return -1;
     }
     if ((dst_file = fopen(dst, "wb")) == NULL) {
+        tlog_print(ERROR, "Can't open destination file.");
         tlog_print_perror();
         return -1;
     }

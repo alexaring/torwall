@@ -48,7 +48,7 @@ int torwall_on() {
         return TOR_ERROR;
     }
     sprintf(resolvconf_torwall, "%s/%s", PREFIX, 
-            "etc/torwall/iptables/resolv.conf");
+            "etc/torwall/iptables/resolv.conf-state");
     // Now copy our resolv.conf to /etc
     if (copy(resolvconf_torwall, "/etc/resolv.conf") == -1) {
         tlog_print(ERROR, "Could not copy our resolv.conf");
