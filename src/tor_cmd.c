@@ -1,12 +1,13 @@
 /*
  * =====================================================================================
  *
- *       Filename:  menu.h
+ *       Filename:  tor_cmd.c
  *
- *    Description:  menu handling header file
+ *    Description:  tor commands execution, thats control interface. It's running
+ *    on daemon.
  *
  *        Version:  1.0
- *        Created:  07/17/2010 09:45:33 AM
+ *        Created:  09/30/2010 09:24:01 PM
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -16,13 +17,17 @@
  * =====================================================================================
  */
 
-#ifndef __TORMENU_H__
-#define __TORMENU_H__
+#include "tor_cmd.h"
 
-#include <gtk/gtk.h>
-#include "tray.h"
+void set_transports() {
 
-void create_menu(gboolean is_active);
+}
 
-#endif
+void set_dnsport() {
+
+}
+
+void set_automaphostsonresolve() {
+
+}
 

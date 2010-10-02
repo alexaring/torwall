@@ -1,12 +1,12 @@
 /*
  * =====================================================================================
  *
- *       Filename:  menu.h
+ *       Filename:  config.c
  *
- *    Description:  menu handling header file
+ *    Description:  handles config file torwallrc
  *
  *        Version:  1.0
- *        Created:  07/17/2010 09:45:33 AM
+ *        Created:  09/29/2010 10:37:43 PM
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -15,14 +15,4 @@
  *
  * =====================================================================================
  */
-
-#ifndef __TORMENU_H__
-#define __TORMENU_H__
-
-#include <gtk/gtk.h>
-#include "tray.h"
-
-void create_menu(gboolean is_active);
-
-#endif
 

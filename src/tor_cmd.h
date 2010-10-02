@@ -1,12 +1,12 @@
 /*
  * =====================================================================================
  *
- *       Filename:  menu.h
+ *       Filename:  tor_cmd.h
  *
- *    Description:  menu handling header file
+ *    Description:  tor cmd header file
  *
  *        Version:  1.0
- *        Created:  07/17/2010 09:45:33 AM
+ *        Created:  09/30/2010 09:25:01 PM
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -16,13 +16,9 @@
  * =====================================================================================
  */
 
-#ifndef __TORMENU_H__
-#define __TORMENU_H__
+#ifndef __TOR_CMD_H__
+#define __TOR_CMD_H__
 
-#include <gtk/gtk.h>
-#include "tray.h"
-
-void create_menu(gboolean is_active);
 
 #endif
 

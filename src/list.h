@@ -21,8 +21,20 @@
 
 #include "socket.h"
 #include "torlog.h"
+#include "file_torexits.h"
+#include "file_config.h"
 
 extern Torlogger* tlog;
+
+typedef struct {
+	Configentry c;
+	void* next;
+} Li_config;
+
+typedef struct {
+	Tornode c;
+	void* next;
+} Li_nodes;
 
 typedef struct {
 	Client c;

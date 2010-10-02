@@ -21,6 +21,8 @@
 #include "socket_client.h"
 #include <gtk/gtk.h>
 
+#define TORCONFIG  /etc/torwall/torwallrc
+
 Torlogger* tlog;
 
 gint main(gint argc, gchar** argv){

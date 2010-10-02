@@ -22,12 +22,18 @@
 #include <gtk/gtk.h>
 #include <string.h>
 #include "socket_client.h"
+#include "menu.h"
 #include "notify.h"
 
 #define TOOL_ACTIVE "Torwall active"
 #define TOOL_INACTIVE "Torwall inactive"
 
 #define BUFSIZE 1024
+
+extern GtkMenu* traymenu;
+extern GtkCheckMenuItem* ch_toggle;
+extern gulong ch_toggle_handler_id;
+extern GtkImageMenuItem *i_currentnode;
 
 void update_icon(void);
 

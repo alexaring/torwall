@@ -20,10 +20,22 @@
 
 static int is_torwall = 0;
 
+void clear_iptables() {
+	system("iptables -P INPUT ACCEPT");
+	system("iptables -P OUTPUT ACCEPT");
+	system("iptables -P FORWARD ACCEPT");
+	system("iptables -F");
+	system("iptables -X");
+	system("iptables -F -t nat");
+	system("iptables -F -t mangle");
+}
+
 void torwall_on() {
 	is_torwall = 1;
 	// Do iptables rules setting here
-	//system("iptables-save > /etc/torwall/iptables-state");
+	system("cp /etc/resolv.conf /etc/torwall/iptables/resolv.conf-state");
+	system("cp /etc/torwall/resolv.conf /etc/resolv.conf");
+	system("iptables-save > /etc/torwall/iptables/iptables-state");
 	system("cat /etc/torwall/torrules | iptables-restore -c");
 	tlog_print(tlog, INFO, "Turn torwall on");
 }
@@ -31,8 +43,10 @@ void torwall_on() {
 void torwall_off() {
 	is_torwall = 0;
 	// Do iptables rules resetting here
-	//system("cat /etc/torwall/iptables-state | iptables-restore -c");
-	system("iptables -t nat --flush");
+	system("cp /etc/torwall/iptables/resolv.conf-state /etc/resolv.conf");
+	clear_iptables();
+	system("cat /etc/torwall/iptables/iptables-state | iptables-restore -c");
+	//system("iptables -t nat --flush");
 	tlog_print(tlog, INFO, "Turn torwall on");
 }
 

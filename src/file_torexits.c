@@ -1,12 +1,12 @@
 /*
  * =====================================================================================
  *
- *       Filename:  menu.h
+ *       Filename:  file_handle.c
  *
- *    Description:  menu handling header file
+ *    Description:  handles file to read for tor server list
  *
  *        Version:  1.0
- *        Created:  07/17/2010 09:45:33 AM
+ *        Created:  09/30/2010 11:22:02 PM
  *       Revision:  none
  *       Compiler:  gcc
  *
@@ -16,13 +16,5 @@
  * =====================================================================================
  */
 
-#ifndef __TORMENU_H__
-#define __TORMENU_H__
-
-#include <gtk/gtk.h>
-#include "tray.h"
-
-void create_menu(gboolean is_active);
-
-#endif
+#include "file_torexits.h"
 
