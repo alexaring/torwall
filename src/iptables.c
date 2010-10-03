@@ -39,6 +39,8 @@ void clear_iptables() {
 int torwall_on() {
     char resolvconf_save[PATH_MAX];
     char resolvconf_torwall[PATH_MAX];
+    char iptables_save[PATH_MAX + 20];
+    char install_torrules[PATH_MAX + 30];
 
     sprintf(resolvconf_save, "%s/%s", PREFIX, 
             "etc/torwall/iptables/resolv.conf-state");
@@ -54,8 +56,12 @@ int torwall_on() {
         tlog_print(ERROR, "Could not copy our resolv.conf");
         return TOR_ERROR;
     }
-	system("iptables-save > /etc/torwall/iptables/iptables-state");
-	system("cat /etc/torwall/torrules | iptables-restore -c");
+    sprintf(iptables_save, "iptables-save > %s/%s", PREFIX, 
+            "etc/torwall/iptables/iptables-state");
+	system(iptables_save);
+    sprintf(install_torrules, "cat %s/%s | iptables-restore -c", PREFIX,
+            "etc/torwall/torrules");
+	system(install_torrules);
 	tlog_print(INFO, "Turn torwall on");
 
     // And it's on..
@@ -66,6 +72,7 @@ int torwall_on() {
 
 int torwall_off() {
     char resolvconf_save[PATH_MAX];
+    char restore_tables[PATH_MAX + 30];
 
     sprintf(resolvconf_save, "%s/%s", PREFIX, 
             "etc/torwall/iptables/resolv.conf-state");
@@ -75,7 +82,9 @@ int torwall_off() {
         return TOR_ERROR;
     }
 	clear_iptables();
-	system("cat /etc/torwall/iptables/iptables-state | iptables-restore -c");
+    sprintf(restore_tables, " cat %s/%s | iptables-restore -c", PREFIX,
+            "etc/torwall/iptables/iptables-state");
+	system(restore_tables);
 	//system("iptables -t nat --flush");
 	tlog_print(INFO, "Turn torwall on");
 
