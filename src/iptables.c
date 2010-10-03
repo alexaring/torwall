@@ -50,7 +50,7 @@ int torwall_on() {
         return TOR_ERROR;
     }
     sprintf(resolvconf_torwall, "%s/%s", PREFIX, 
-            "etc/torwall/iptables/resolv.conf-state");
+            "etc/torwall/resolv.conf");
     // Now copy our resolv.conf to /etc
     if (copy(resolvconf_torwall, "/etc/resolv.conf") == -1) {
         tlog_print(ERROR, "Could not copy our resolv.conf");
@@ -58,13 +58,15 @@ int torwall_on() {
     }
     sprintf(iptables_save, "iptables-save > %s/%s", PREFIX, 
             "etc/torwall/iptables/iptables-state");
+    // Save original iptables settings 
 	system(iptables_save);
     sprintf(install_torrules, "cat %s/%s | iptables-restore -c", PREFIX,
             "etc/torwall/torrules");
+    // Install Tor rules
 	system(install_torrules);
-	tlog_print(INFO, "Turn torwall on");
 
     // And it's on..
+	tlog_print(INFO, "Torwall status: On");
 	is_torwall = STATUS_RUNNING;
 
 	return TOR_OK;
@@ -82,13 +84,14 @@ int torwall_off() {
         return TOR_ERROR;
     }
 	clear_iptables();
+    // Restore tables
     sprintf(restore_tables, " cat %s/%s | iptables-restore -c", PREFIX,
             "etc/torwall/iptables/iptables-state");
 	system(restore_tables);
 	//system("iptables -t nat --flush");
-	tlog_print(INFO, "Turn torwall on");
 
     // And it's off..
+	tlog_print(INFO, "Torwall status: Off");
 	is_torwall = STATUS_NOT_RUNNING;
 
 	return TOR_OK;
