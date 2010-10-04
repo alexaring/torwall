@@ -24,8 +24,6 @@
 #include "iptables.h"
 #include "torlog.h"
 
-static int is_torwall = STATUS_NOT_RUNNING;
-
 void clear_iptables() {
 	system("iptables -P INPUT ACCEPT");
 	system("iptables -P OUTPUT ACCEPT");
@@ -65,9 +63,12 @@ int torwall_on() {
     // Install Tor rules
 	system(install_torrules);
 
+    if (create_status_file() == -1) {
+        tlog_print(ERROR, "Ouch. Could not create status file");
+        return TOR_ERROR;
+    }
     // And it's on..
 	tlog_print(INFO, "Torwall status: On");
-	is_torwall = STATUS_RUNNING;
 
 	return TOR_OK;
 }
@@ -90,15 +91,17 @@ int torwall_off() {
 	system(restore_tables);
 	//system("iptables -t nat --flush");
 
+    if (delete_status_file() == -1) {
+        tlog_print(ERROR, "Ouch. Couldn't delete status file.");
+        return TOR_ERROR;
+    }
     // And it's off..
 	tlog_print(INFO, "Torwall status: Off");
-	is_torwall = STATUS_NOT_RUNNING;
 
 	return TOR_OK;
 }
 
 int torwall_status() {
 	tlog_print(INFO, "Return torwall status");
-
-	return is_torwall;
+	return got_status_file();
 }

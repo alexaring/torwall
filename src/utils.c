@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <libiptc/libiptc.h>
 
+#include "config_defines.h"
+#include "netapi.h"
 #include "torlog.h"
 
 int copy(const char *src, const char *dst)
@@ -56,4 +58,59 @@ int copy(const char *src, const char *dst)
 
 int clear_ipt_rules()
 {
+    return 0;
+}
+
+int create_status_file()
+{
+    FILE *status_file = NULL;
+    char filename[PATH_MAX];
+
+    // Create empty status file 
+    sprintf(filename, "%s/%s", PREFIX, 
+            "var/run/torwall/running");
+    if ((status_file = fopen(filename, "w")) == NULL) {
+        tlog_print_perror();
+        return -1;
+    }
+    if (fclose(status_file) == -1) {
+        tlog_print_perror();
+        return -1;
+    }
+
+    return 0;
+}
+
+int got_status_file()
+{
+    char filename[PATH_MAX];
+
+    // Create empty status file 
+    sprintf(filename, "%s/%s", PREFIX, 
+            "/var/run/torwall/running");
+    if (access(filename, F_OK) == -1) {
+        // Nope
+        tlog_print(INFO, "Status file: None");
+        return STATUS_NOT_RUNNING;
+    }
+
+    // Ok.
+    tlog_print(INFO, "Status file: Ok");
+    return STATUS_RUNNING;
+}
+
+int delete_status_file()
+{
+    char filename[PATH_MAX];
+
+    // Create empty status file 
+    sprintf(filename, "%s/%s", PREFIX, 
+            "/var/run/torwall/running");
+    if (unlink(filename) == -1) {
+        tlog_print(ERROR, "Could not delete status file");
+        tlog_print_perror();
+        return -1;
+    }
+
+    return 0;
 }
