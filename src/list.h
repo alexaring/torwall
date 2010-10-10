@@ -1,19 +1,15 @@
 /*
- * =====================================================================================
+ * ============================================================================
  *
  *       Filename:  list.h
  *
  *    Description:  list to handle all clients header file.
  *
- *        Version:  1.0
  *        Created:  08/15/2010 09:12:54 PM
- *       Revision:  none
- *       Compiler:  gcc
  *
- *         Author:  Alexander Aring (Hochschule RheinMain), alex.aring@gmail.com
- *        Company:  
+ *         Author:  Alexander Aring <alex.aring@gmail.com>
  *
- * =====================================================================================
+ * ============================================================================
  */
 
 #ifndef __TORLIST_H__

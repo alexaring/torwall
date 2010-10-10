@@ -1,25 +1,19 @@
 /*
- * =====================================================================================
+ * ============================================================================
  *
  *       Filename:  tdaemon.c
  *
- *    Description: TorWall daemon.c 
+ *    Description: TorWall daemon implementation
  *
- *        Version:  1.0
  *        Created:  08/15/2010 02:27:29 AM
- *       Revision:  none
- *       Compiler:  gcc
  *
- *         Author:  Alexander Aring (Hochschule RheinMain), alex.aring@gmail.com
- *        Company:  
+ *         Author:  Alexander Aring <alex.aring@gmail.com>
  *
- * =====================================================================================
+ * ============================================================================
  */
 
 #include "torlog.h"
 #include "socket.h"
-
-Torlogger* tlog;
 
 int main(int argc, char* argv[]) {
 	tlog_init();
@@ -27,6 +21,6 @@ int main(int argc, char* argv[]) {
 	open_socket();
 	server_handling();
 	close_socket();
-	tlog_free(&tlog);
+	tlog_free();
 	return EXIT_SUCCESS;
 }

@@ -1,19 +1,15 @@
 /*
- * =====================================================================================
+ * ============================================================================
  *
  *       Filename:  torlog.c
  *
  *    Description:  logger for torwall
  *
- *        Version:  1.0
  *        Created:  08/15/2010 02:40:07 AM
- *       Revision:  none
- *       Compiler:  gcc
  *
- *         Author:  Alexander Aring (Hochschule RheinMain), alex.aring@gmail.com
- *        Company:  
+ *         Author:  Alexander Aring <alex.aring@gmail.com>
  *
- * =====================================================================================
+ * ============================================================================
  */
 
 #include "torlog.h"

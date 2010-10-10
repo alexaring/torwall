@@ -1,19 +1,15 @@
 /*
- * =====================================================================================
+ * ============================================================================
  *
  *       Filename:  tray.h
  *
  *    Description:  tray header file
  *
- *        Version:  1.0
  *        Created:  07/11/2010 06:26:34 PM
- *       Revision:  none
- *       Compiler:  gcc
  *
- *         Author:  Alexander Aring (Hochschule RheinMain), alex.aring@gmail.com
- *        Company:  
+ *         Author:  Alexander Aring <alex.aring@gmail.com>
  *
- * =====================================================================================
+ * ============================================================================
  */
 
 #ifndef __TORTRAY_H__

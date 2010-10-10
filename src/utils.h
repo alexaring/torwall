@@ -1,6 +1,19 @@
-/**
- * This encapsulates all system calls
+/*
+ * ============================================================================
+ *
+ *       Filename:  utils.h
+ *
+ *    Description:  Utilities header
+ *
+ *        Created:  07/11/2010 06:26:34 PM
+ *
+ *         Author:  Alexander Aring <alex.aring@gmail.com>
+ *
+ * ============================================================================
  */
+
+#ifndef __UTILS_H__
+#define __UTILS_H__
 
 /**
  * Copy a file from src to dst.
@@ -29,3 +42,11 @@ int got_status_file();
  * Delete the torwall status file. Returns -1 on error, 0 on success.
  */
 int delete_status_file();
+
+/**
+ * Use a path like "/var/log/foo" and put the configured prefix in front of it
+ * like so: "/my/prefix/var/log/foo". The returned path is in path_out.
+ */
+void make_path_prefixed(char *path_out, const char *path);
+
+#endif /* __UTILS_H__ */

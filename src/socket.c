@@ -1,19 +1,15 @@
 /*
- * =====================================================================================
+ * ============================================================================
  *
  *       Filename:  socket.c
  *
  *    Description:  socket handling torwall
  *
- *        Version:  1.0
  *        Created:  08/15/2010 02:28:14 AM
- *       Revision:  none
- *       Compiler:  gcc
  *
- *         Author:  Alexander Aring (Hochschule RheinMain), alex.aring@gmail.com
- *        Company:  
+ *         Author:  Alexander Aring <alex.aring@gmail.com>
  *
- * =====================================================================================
+ * ============================================================================
  */
 
 #include "socket.h"

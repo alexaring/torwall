@@ -3,3 +3,10 @@
  */
 
 #define PREFIX "@prefix@"
+#define RESOLV_CONF "/etc/resolv.conf"
+#define SAVED_RESOLV_CONF "@prefix@/etc/torwall/iptables/resolv.conf-state"
+#define TORWALL_RESOLV_CONF "@prefix@/etc/torwall/resolv.conf"
+#define SAVED_IPTABLES "@prefix@/etc/torwall/iptables/iptables-state"
+#define TORWALL_IPTABLES "@prefix@/etc/torwall/torrules"
+#define TORWALL_STATUS_FILE "@prefix@/var/run/torwall/running"
+#define IPTABLES_CLEAR_SCRIPT "@prefix@/bin/iptables_clear.sh"

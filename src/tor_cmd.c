@@ -1,20 +1,16 @@
 /*
- * =====================================================================================
+ * ============================================================================
  *
  *       Filename:  tor_cmd.c
  *
- *    Description:  tor commands execution, thats control interface. It's running
- *    on daemon.
+ *    Description:  tor commands execution, thats control interface. 
+ *                  It's running on daemon.
  *
- *        Version:  1.0
  *        Created:  09/30/2010 09:24:01 PM
- *       Revision:  none
- *       Compiler:  gcc
  *
- *         Author:  Alexander Aring (Hochschule RheinMain), alex.aring@gmail.com
- *        Company:  
+ *         Author:  Alexander Aring <alex.aring@gmail.com>
  *
- * =====================================================================================
+ * ============================================================================
  */
 
 #include "tor_cmd.h"
