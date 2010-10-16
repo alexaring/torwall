@@ -22,7 +22,7 @@
 #include <sys/un.h>
 #include <sys/stat.h>
 #include "torlog.h"
-#include "iptables.h"
+#include "torwall.h"
 #include "netapi.h"
 
 #define SOCK_PATH "/tmp/torwall_socket"

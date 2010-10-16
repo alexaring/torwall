@@ -7,10 +7,10 @@ AM_LDFLAGS=`pkg-config --libs gtk+-2.0 libnotify`
 
 bin_PROGRAMS = torwalld torwalltray
 bin_SCRIPTS = iptables_clear.sh
-torwalld_SOURCES=tdaemon.c socket.c torlog.c list.c iptables.c file_config.c tor_cmd.c file_torexits.c utils.c \
+torwalld_SOURCES=tdaemon.c socket.c torlog.c list.c torwall.c file_config.c tor_cmd.c file_torexits.c utils.c \
 					   torlog.h \
 				   list.h \
-				   iptables.h \
+				   torwall.h \
 				   netapi.h \
                    socket.h \
 				   file_config.h \

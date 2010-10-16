@@ -1,9 +1,9 @@
 /*
  * ============================================================================
  *
- *       Filename:  iptables.h
+ *       Filename:  torwall.h
  *
- *    Description:  iptables api header file
+ *    Description:  torwall api header file
  *
  *        Created:  08/17/2010 11:04:33 PM
  *
@@ -19,6 +19,7 @@
 
 int torwall_on(void);
 int torwall_off(void);
+int torwall_rollback(void);
 int torwall_status(void);
 
 #endif
