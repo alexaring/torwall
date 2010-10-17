@@ -51,24 +51,24 @@ void client_handling(Client c, fd_set* readfds) {
 		}
 		switch (recvbuffer->cmd) {
 			case STATUS:
+				sprintf(charbuffer, "Client %d ask for status", c.fd);
 				err = torwall_status();
 				sendbuffer->returncmd = err;
 				send(c.fd, sendbuffer, sizeof(PacketReturn), 0);
-				sprintf(charbuffer, "Client %d ask for status", c.fd);
 				tlog_print(DEBUG, charbuffer);
 				break;
 			case ON:
+				sprintf(charbuffer, "Torwall on from client %d", c.fd);
 				err = torwall_on();
 				sendbuffer->returncmd = err;
 				send(c.fd, sendbuffer, sizeof(PacketReturn), 0);
-				sprintf(charbuffer, "Torwall on from client %d", c.fd);
 				tlog_print(DEBUG, charbuffer);
 				break;
 			case OFF:
+				sprintf(charbuffer, "Torwall off from client %d", c.fd);
 				err = torwall_off();
 				sendbuffer->returncmd = err;
 				send(c.fd, sendbuffer, sizeof(PacketReturn), 0);
-				sprintf(charbuffer, "Torwall off from client %d", c.fd);
 				tlog_print(INFO, charbuffer);
 				break;
 			case EXIT:
@@ -138,6 +138,8 @@ void server_handling() {
 			sprintf(buffer, "Accept Client: %d", c.fd);
 			tlog_print(INFO, buffer);
 		} else {
+            sprintf(buffer, "Client writes: %d", c.fd);
+			tlog_print(INFO, buffer);
 			for_each(list, client_handling, &readfds);
 		}
 		print_list(list, print_client);

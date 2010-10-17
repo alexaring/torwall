@@ -2,3 +2,4 @@ List of TODO's :
 - Clean up code, with all free's, check with valingrid...
 - Read only Tor config. Describe instruction in gui.
 - Added 
+- Check if Tor is actually running before enabling the iptables rules

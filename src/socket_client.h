@@ -26,9 +26,9 @@
 extern Torlogger* tlog;
 
 void open_socket(void);
-int torwall_status(void);
-int torwall_on(void);
-int torwall_off(void);
+int torwall_client_status(void);
+int torwall_client_on(void);
+int torwall_client_off(void);
 void close_socket(void);
 
 #endif

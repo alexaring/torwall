@@ -24,7 +24,7 @@ int copy(const char *src, const char *dst);
 /**
  * Clear all iptables rules
  */
-int clear_ipt_rules(void);
+int clear_iptables(void);
 
 /**
  * Create the torwall status file under $PREFIX/var/run/torwall. Returns -1 on
@@ -48,5 +48,26 @@ int delete_status_file();
  * like so: "/my/prefix/var/log/foo". The returned path is in path_out.
  */
 void make_path_prefixed(char *path_out, const char *path);
+
+/**
+ * Compares two files for differences. All comments inside the files in form 
+ * of hashes ('#') are ignored.
+ *
+ * Returns -1 on error, 1 if files are the same, 0 if there's a difference.
+ */
+int compare_iptbles_files(const char *file1, const char *file2);
+
+/**
+ * Save current state of iptables to a file.
+ *
+ * Returns -1 on error, otherwise 0.
+ */
+int save_iptables(const char *file);
+
+/**
+ * Compare the Torwall iptables rules to the currently running ones. If they
+ * are the same, return 1. Else return 0.
+ */
+int compare_torwall_iptables();
 
 #endif /* __UTILS_H__ */

@@ -35,7 +35,7 @@ void open_socket() {
 	tlog_print(INFO, "Connected.");
 }
 
-E_RETURN torwall_status(void) {
+E_RETURN torwall_client_status(void) {
 	PacketReturn pktret;
 	PacketCommand pktcmd;
 	int err;
@@ -53,7 +53,7 @@ E_RETURN torwall_status(void) {
 	return pktret.returncmd;
 }
 
-E_RETURN torwall_on() {
+E_RETURN torwall_client_on() {
 	PacketReturn pktret;
 	PacketCommand pktcmd;
 	int err;
@@ -71,7 +71,7 @@ E_RETURN torwall_on() {
 	return pktret.returncmd;
 }
 
-E_RETURN torwall_off() {
+E_RETURN torwall_client_off() {
 	PacketReturn pktret;
 	PacketCommand pktcmd;
 	int err;

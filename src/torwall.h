@@ -19,7 +19,7 @@
 
 int torwall_on(void);
 int torwall_off(void);
-int torwall_rollback(void);
+int torwall_rollback(int with_status_file);
 int torwall_status(void);
 
 #endif

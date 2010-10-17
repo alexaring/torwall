@@ -18,9 +18,8 @@ static GtkStatusIcon* tray_icon = NULL;
 
 void update_icon(void){
 	E_RETURN is_wall_active;
-	is_wall_active = torwall_status();
-	if (is_wall_active == STATUS_NOT_RUNNING) {
-		torwall_on();
+	is_wall_active = torwall_client_status();
+	if (is_wall_active == STATUS_RUNNING) {
 		gtk_status_icon_set_from_icon_name(tray_icon, "torwallActive");
 		update_notify(TOOL_ACTIVE, "torwallActive");
 		gtk_status_icon_set_tooltip(tray_icon, 
@@ -30,7 +29,6 @@ void update_icon(void){
 		gtk_widget_set_sensitive((GtkWidget*)i_currentnode, 1);
 		g_signal_handler_unblock(ch_toggle, ch_toggle_handler_id);
 	} else {
-		torwall_off();
 		gtk_status_icon_set_from_icon_name(tray_icon, "torwallInactive");
 		update_notify(TOOL_INACTIVE, "torwallInactive");
 		gtk_status_icon_set_tooltip(tray_icon, 
@@ -43,6 +41,13 @@ void update_icon(void){
 }
 
 static void on_click(GtkStatusIcon *status_icon, gpointer user_data){
+    printf("ONCLICK\n");
+	E_RETURN is_wall_active = torwall_client_status();
+	if (is_wall_active == STATUS_RUNNING) {
+        torwall_client_off();
+    } else {
+        torwall_client_on();
+    }
 	update_icon();
 }
 
@@ -52,7 +57,7 @@ static void on_menu(GtkStatusIcon *status_icon, guint button, guint activate_tim
 
 void create_tray_icon(){
 	E_RETURN is_wall_active;
-	is_wall_active = torwall_status();
+	is_wall_active = torwall_client_status();
 	tray_icon = gtk_status_icon_new();
 	create_menu(is_wall_active);
 	g_signal_connect(G_OBJECT(tray_icon), "activate", 

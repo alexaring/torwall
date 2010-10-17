@@ -26,6 +26,12 @@ static GtkImageMenuItem *i_exit_de, *i_exit_us;
 static int b_exit_de, b_exit_us;
 
 static void on_click_toggle(GtkCheckMenuItem *item, gpointer user_data){
+	E_RETURN is_wall_active = torwall_client_status();
+	if (is_wall_active == STATUS_RUNNING) {
+        torwall_client_off();
+    } else {
+        torwall_client_on();
+    }
 	update_icon();
 }
 
