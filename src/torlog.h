@@ -20,6 +20,7 @@
 #include <time.h>
 #include <string.h>
 #include <errno.h>
+#include <stdarg.h>
 
 #define DATE_BUFFER_SIZE 80
 
@@ -37,7 +38,7 @@ typedef struct {
 int tlog_init();
 int tlog_free();
 int tlog_set_log_level(E_LEVEL loglevel);
-int tlog_print(E_LEVEL loglevel, const char* msg);
+int tlog_print(E_LEVEL loglevel, const char* format, ...);
 int tlog_print_perror();
 
 #endif
